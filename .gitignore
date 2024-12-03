@@ -1,0 +1,24 @@
+.idea/
+.vscode/
+
+/bin/
+/target/
+
+GL/get all users.bru
+GL/get user by equipeId.bru
+GL/test.bru
+GL/Notifs/ajout notifs.bru
+GL/Notifs/get notifs.bru
+
+
+package-lock.json
+package.json
+node_modules/
+
+backendAlphaPlan/src/main/resources/application.properties
+backendAlphaPlan/src/test/resources/application-test.properties
+logs/myapp.log
+
+.classpath
+.project
+spica

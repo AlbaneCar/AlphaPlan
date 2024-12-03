@@ -1,0 +1,138 @@
+stages:
+  - vue_build
+  - java_build
+  - analysis
+  - deploy
+
+variables:
+  MAVEN_SETTINGS_PATH: .m2/settings.xml
+  
+  MAVEN_OPTS: "-Dhttp.proxyHost=192.168.4.8 -Dhttp.proxyPort=3128 -Dhttps.proxyHost=192.168.4.8 -Dhttps.proxyPort=3128 -Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
+
+  PROJECT_DEV_NAME: "Team6_2024_DevBranch"
+  PROJECT_DEV_KEY: "Team6_2024_DevBranch_Project"
+  
+  PROJECT_MASTER_NAME: "Team6_2024_MasterBranch"
+  PROJECT_MASTER_KEY: "Team6_2024_MasterBranch_Project"
+
+  SONAR_TOKEN: "6d50adca4d76dd6d7ffe0ff184ce07e5613ceffa"
+
+  SSH_USER: "etudiant"
+  SSH_HOST_DEV: "172.24.1.9"
+  SSH_HOST_PROD: "172.24.1.14"
+  REMOTE_PATH: "/home/etudiant"
+
+cache:
+  paths:
+    - .m2/repository
+
+before_script:
+  - export https_proxy=http://192.168.4.8:3128/
+  - export http_proxy=http://192.168.4.8:3128/
+
+
+vue_build:
+  stage: vue_build
+  image: node:20.10.0
+  cache:
+    key: "node-$CI_COMMIT_REF_SLUG"
+    paths:
+      - node_modules/
+  script:
+    - cd frontendAlphaPlan
+    - rm -rf package-lock.json node_modules
+    - npm install
+    - npm run build
+  artifacts:
+    name: "Vue artifacts from $CI_PROJECT_NAME on $CI_COMMIT_REF_SLUG"
+    paths:
+      - backendAlphaPlan/src/main/resources/static/
+  only:
+    - main
+    - dev
+
+
+
+java_build:
+  stage: java_build
+  image: maven:3.8.3-openjdk-17
+  cache:
+    key: "maven-$CI_COMMIT_REF_SLUG"
+    paths:
+      - .m2/repository
+  script:
+    - cd backendAlphaPlan
+    - echo "$SPRING_CONFIG" > src/main/resources/application.properties
+    - mvn package -DskipTests=true
+    - ls -alh target/
+  artifacts:
+    name: "Maven artifacts from $CI_PROJECT_NAME on $CI_COMMIT_REF_SLUG"
+    paths:
+      - "backendAlphaPlan/target/alphaplan.war"
+  only:
+    - main
+    - dev
+
+quality-dev:
+  stage: analysis
+  image: maven:3.8.3-openjdk-17
+  cache:
+    key: "maven-$CI_COMMIT_REF_SLUG"
+    paths:
+      - .m2/repository
+  script:
+    - cd backendAlphaPlan
+    - mvn clean install org.jacoco:jacoco-maven-plugin:0.8.7:prepare-agent
+    - mvn validate sonar:sonar -Dsonar.projectName=$PROJECT_DEV_NAME -Dsonar.projectKey=$PROJECT_DEV_KEY -Dsonar.host.url=http://172.24.1.1:9000/sonar -Dsonar.login="$SONAR_TOKEN" 
+  only:
+    - dev
+
+
+quality-prod:
+  stage: analysis
+  image: maven:3.8.3-openjdk-17
+  cache:
+    key: "maven-$CI_COMMIT_REF_SLUG"
+    paths:
+      - .m2/repository
+  script:
+    - cd backendAlphaPlan
+    - mvn clean install org.jacoco:jacoco-maven-plugin:0.8.7:prepare-agent
+    - mvn validate sonar:sonar -Dsonar.projectName=$PROJECT_MASTER_NAME -Dsonar.projectKey=$PROJECT_MASTER_KEY -Dsonar.host.url=http://172.24.1.1:9000/sonar -Dsonar.login="$SONAR_TOKEN"
+  only:
+    - main
+
+
+deploy_dev:
+  stage: deploy
+  image: alpine:latest
+  script:
+    - apk update
+    - apk add --no-cache sudo openssh-client bash
+    - mkdir -p ~/.ssh
+    - eval $(ssh-agent -s)
+    - echo "$SSH_KEY_DEV" | tr -d '\r' | ssh-add -
+    - echo "Deploying commit $CI_COMMIT_SHA from branch $CI_COMMIT_REF_NAME"
+    - scp -o StrictHostKeyChecking=no backendAlphaPlan/target/alphaplan.war $SSH_USER@$SSH_HOST_DEV:war/
+    - ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST_DEV "rm -R /srv/tomcat10/webapps/alphaplan; rm /srv/tomcat10/webapps/alphaplan.war; cp war/alphaplan.war /srv/tomcat10/webapps/; sudo systemctl restart tomcat10; echo 'Deployment completed successfully!'"
+  only:
+    - dev
+
+deploy_prod:
+  stage: deploy
+  image: alpine:latest
+  script:
+    - apk update
+    - apk add --no-cache sudo openssh-client bash
+    - mkdir -p ~/.ssh
+    - eval $(ssh-agent -s)
+    - echo "$SSH_KEY_PROD" | tr -d '\r' | ssh-add -
+    - echo "Deploying commit $CI_COMMIT_SHA from branch $CI_COMMIT_REF_NAME"
+    - scp -o StrictHostKeyChecking=no backendAlphaPlan/target/alphaplan.war $SSH_USER@$SSH_HOST_PROD:war/
+    - ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST_PROD "rm -R /srv/tomcat10/webapps/alphaplan; rm /srv/tomcat10/webapps/alphaplan.war; cp war/alphaplan.war /srv/tomcat10/webapps/; sudo systemctl restart tomcat10; echo 'Deployment completed successfully!'"
+  only:
+    - main
+
+ 

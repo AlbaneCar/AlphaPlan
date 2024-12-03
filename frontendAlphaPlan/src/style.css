@@ -1,0 +1,61 @@
+@import url('@flaticon/flaticon-uicons/css/all/all.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* width */
+::-webkit-scrollbar {
+    width: 8px;
+}
+ 
+/* Track */
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+ 
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+@font-face {
+    font-family: "CASlalomRegular";
+    src: url("assets/fonts/CASlalomExtended/CASlalomExtended-Regular.otf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "CASlalomMedium";
+    src: url("assets/fonts/CASlalomExtended/CASlalomExtended-Medium.otf") format("truetype");
+    font-weight: medium;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "CASlalomBold";
+    src: url("assets/fonts/CASlalomExtended/CASlalomExtended-Bold.otf") format("truetype");
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "ABeeZeeRegular";
+    src: url("assets/fonts/ABeeZee/ABeeZee-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "ABeeZeeItalic";
+    src: url("assets/fonts/ABeeZee/ABeeZee-Italic.ttf") format("truetype");
+    font-weight: normal;
+    font-style: italic;
+}
