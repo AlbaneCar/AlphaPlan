@@ -1,29 +1,37 @@
-# AlphaPlan
+# AlphaPlan 🌟
 
-## Description
+Welcome to **AlphaPlan** – your go-to web application for managing the **GL Project** within the Software and Data (LD) track at ESEO Engineering School. Designed with simplicity and efficiency in mind, AlphaPlan streamlines student management, team creation, sprint tracking, grading, and much more.
 
-The **AlphaPlan** is a web application developed to manage the **GL Project** within the Software and Data (LD) track at ESEO engineering school. This application facilitates the management of students, team creation, sprint tracking, project grading, and enables all involved users (students, project leaders, mentors, etc.) to interact with the system in a secure and smooth way.
+The goal? To automate repetitive tasks and save time, helping project leaders, mentors, and students focus on what truly matters: the project itself!
 
-The primary goal is to replace the current manual and time-consuming processes by automating tasks like team creation, performance evaluation, and grade management.
+---
 
-## Features
+## 📝 Features
 
-- **User Management**: Users can log in with credentials and access specific information based on their roles (students, project leaders, mentors, etc.).
-- **Team Creation**: Project leaders can import student lists and assign them to teams automatically based on criteria such as gender and grade average.
-- **Sprint Management**: Define sprints, track progress, and manage sprint completion protocols.
-- **Project Grading**: Instructors and mentors grade team projects (technical management, project management, compliance).
-- **Bonus/Malus Management**: Assign and manage bonuses or penalties for students based on individual performance.
+AlphaPlan comes packed with features to make your project management experience smoother and more organized:
 
-## Technologies Used
+- **User Management**: Secure login for students, project leaders, mentors, and other users, each with role-based access.
+- **Team Creation**: Project leaders can import student lists and automatically assign them to teams based on predefined criteria like gender and grade average.
+- **Sprint Management**: Easily define, track, and manage sprints, ensuring smooth progress and completion.
+- **Project Grading**: Mentors and instructors can grade teams on various aspects, including technical management, project management, and compliance.
+- **Bonus/Malus System**: Evaluate individual performances and apply bonuses or penalties as needed.
 
-- **Frontend**: JavaScript (with a framework Vue.js)
-- **Backend**: Java
-- **Database**: MySQL
-- **Authentication**: JWT (JSON Web Tokens)
+---
 
-## Authors
+## 💻 Technologies Used
 
-This project was developed collaboratively, with each team member contributing in their respective roles:
+Here’s a quick look at the tech stack that powers AlphaPlan:
+
+- **Frontend**: Vue.js (JavaScript framework)
+- **Backend**: Java (robust and scalable)
+- **Database**: MySQL (for efficient data storage)
+- **Authentication**: JWT (JSON Web Tokens) for secure login
+
+---
+
+## 🤝 Authors
+
+This project was developed by a talented team of individuals, each taking on unique roles to make AlphaPlan a success:
 
 - **Albane Crateron** - Scrum Manager
 - **Isaac Mauxion** - System Admin
@@ -34,9 +42,13 @@ This project was developed collaboratively, with each team member contributing i
 - **Julian Cirou** - Validation Manager
 - **Antoine Morin** - System Admin
 
-## Installation
+---
 
-1. Clone the repository:
+## 🚀 Installation
+
+Getting started with AlphaPlan is a breeze. Follow the steps below to set up your environment:
+
+1. **Clone the repository**:
    ```bash
    git clone https://github.com/username/GL-Management-System.git
 ```
