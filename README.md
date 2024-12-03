@@ -35,12 +35,12 @@ This project was developed by a talented team of individuals, each taking on uni
 
 - **Albane Crateron** - Scrum Manager
 - **Isaac Mauxion** - System Admin
+- **Antoine Morin** - System Admin
 - **Enzo Herbreteau** - UI/UX Manager
 - **Hugo Bourdais** - Quality Manager
 - **Yann Lidec** - Product Owner
 - **Hugo Roullier** - Product Owner
 - **Julian Cirou** - Validation Manager
-- **Antoine Morin** - System Admin
 
 ---
 
@@ -51,4 +51,4 @@ Getting started with AlphaPlan is a breeze. Follow the steps below to set up you
 1. **Clone the repository**:
    ```bash
    git clone https://github.com/username/GL-Management-System.git
-```
+   ```
